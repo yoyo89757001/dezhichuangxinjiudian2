@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="huise33">#34e9d2d6</color>
+    <color name="lanse33">#1b37d6</color>
+
+    <color name="colorBar_bg">#0d2cf9</color>
+    <color name="tabtextcolo">#b7868686</color>
+    <color name="write">#ffffffff</color>
+    <color name="blake">#000000</color>
+
+    <!-- 半透明 -->
+
+    <!-- 用于页面背景 -->
+    <!-- 用于页面背景 -->
+    <!-- actionbar背景 ,即是所有标题栏背景 主题色 -->
+
+
+    <!-- 红色 -->
+    <!-- 辅助文字-->
+    <!-- 橙色 -->
+    <!-- 深灰 -->
+    <!-- 深灰 -->
+
+    <!--背景颜色-->
+    <color name="textcolor">#434B73</color><!--文字颜色-->
+    <!--标题颜色-->
+    <!--内容颜色-->
+    <!--内容颜色-->
+    <!--40%透明的icon颜色-->
+
+
+    <color name="white">#ffffffff</color>
+
+</resources>

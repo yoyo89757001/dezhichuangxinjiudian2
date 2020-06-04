@@ -258,7 +258,7 @@ public class YuLanActivity extends Activity implements CameraManager.CameraListe
         SettingVar.mWidth = widthPixels;
         scrollView = (ScrollView) findViewById(R.id.scrollView);
         AssetManager mgr = getAssets();
-        Typeface tf = Typeface.createFromAsset(mgr, "fonts/Univers LT 57 Condensed.ttf");
+      //  Typeface tf = Typeface.createFromAsset(mgr, "fonts/Univers LT 57 Condensed.ttf");
         /* 初始化界面 */
        // faceEndTextView = (TextView) this.findViewById(R.id.tv_meg2);
        // faceEndTextView.setTypeface(tf);

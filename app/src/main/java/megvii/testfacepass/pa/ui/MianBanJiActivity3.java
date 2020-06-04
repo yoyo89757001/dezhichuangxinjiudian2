@@ -630,13 +630,6 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             }
         }
 
-        for (Subject subject : subjectBox.getAll()) {
-            Log.d("MianBanJiActivity3", subject.getPerson_id());
-            Log.d("MianBanJiActivity3", subject.getPerson_name());
-        }
-
-
-
     }
 
     public void stopMedie() {
@@ -644,6 +637,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
         soundPool.stop(2);
         soundPool.stop(3);
         soundPool.stop(4);
+        soundPool.stop(5);
     }
 
     private String  byteToHexString(byte mByte)
@@ -1616,7 +1610,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
         MyApplication.myApplication.removeActivity(this);
     }
 
-    private static final int REQUEST_CODE_CHOOSE_PICK = 1;
+  //  private static final int REQUEST_CODE_CHOOSE_PICK = 1;
 
 
 //    @Override
@@ -1737,67 +1731,67 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
 
 
-    //数据同步
-    private void link_infoSync() {
-        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        JSONArray array = new JSONArray();
-        LazyList<HuiFuBean> huiFuBeanList = huiFuBeanBox.query().build().findLazy();
-        if (huiFuBeanList.size()==0)
-            return;
-        List<HuiFuBean> huiFuBeans=new ArrayList<>();
-        for (HuiFuBean h:huiFuBeanList){
-            huiFuBeans.add(h);
-        }
-            for (HuiFuBean bean : huiFuBeans) {
-                JSONObject object = new JSONObject();
-                try {
-                    object.put("pepopleId", bean.getPepopleId());
-                    object.put("pepopleType", bean.getPepopleType());
-                    object.put("type", bean.getType());
-                    object.put("msg", bean.getMsg());
-                    object.put("shortId", bean.getShortId());
-                    object.put("serialnumber", JHM);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                array.put(object);
-            }
-
-        Log.d("MianBanJiActivity3", "数据同步：" + array.toString());
-        RequestBody body = RequestBody.create(array.toString(), JSON);
-        Request.Builder requestBuilder = new Request.Builder()
-                .header("Content-Type", "application/json")
-                .post(body)
-                .url(baoCunBean.getHoutaiDiZhi() + "/app/infoSync");
-        // step 3：创建 Call 对象
-        Call call = okHttpClient.newCall(requestBuilder.build());
-        //step 4: 开始异步请求
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("AllConnects", "数据同步请求失败" + e.getMessage());
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.d("AllConnects", "请求成功" + call.request().toString());
-                //获得返回体
-                try {
-                    ResponseBody body = response.body();
-                    String ss = body.string().trim();
-                    Log.d("AllConnects", "数据同步:" + ss);
-                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
-
-                    for (HuiFuBean bean : huiFuBeans) {
-                        huiFuBeanBox.remove(bean);
-                    }
-                } catch (Exception e) {
-                    Log.d("WebsocketPushMsg", e.getMessage() + "数据同步");
-                }
-            }
-        });
-    }
+//    //数据同步
+//    private void link_infoSync() {
+//        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+//        JSONArray array = new JSONArray();
+//        LazyList<HuiFuBean> huiFuBeanList = huiFuBeanBox.query().build().findLazy();
+//        if (huiFuBeanList.size()==0)
+//            return;
+//        List<HuiFuBean> huiFuBeans=new ArrayList<>();
+//        for (HuiFuBean h:huiFuBeanList){
+//            huiFuBeans.add(h);
+//        }
+//            for (HuiFuBean bean : huiFuBeans) {
+//                JSONObject object = new JSONObject();
+//                try {
+//                    object.put("pepopleId", bean.getPepopleId());
+//                    object.put("pepopleType", bean.getPepopleType());
+//                    object.put("type", bean.getType());
+//                    object.put("msg", bean.getMsg());
+//                    object.put("shortId", bean.getShortId());
+//                    object.put("serialnumber", JHM);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                array.put(object);
+//            }
+//
+//        Log.d("MianBanJiActivity3", "数据同步：" + array.toString());
+//        RequestBody body = RequestBody.create(array.toString(), JSON);
+//        Request.Builder requestBuilder = new Request.Builder()
+//                .header("Content-Type", "application/json")
+//                .post(body)
+//                .url(baoCunBean.getHoutaiDiZhi() + "/app/infoSync");
+//        // step 3：创建 Call 对象
+//        Call call = okHttpClient.newCall(requestBuilder.build());
+//        //step 4: 开始异步请求
+//        call.enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Log.d("AllConnects", "数据同步请求失败" + e.getMessage());
+//
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                Log.d("AllConnects", "请求成功" + call.request().toString());
+//                //获得返回体
+//                try {
+//                    ResponseBody body = response.body();
+//                    String ss = body.string().trim();
+//                    Log.d("AllConnects", "数据同步:" + ss);
+//                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+//
+//                    for (HuiFuBean bean : huiFuBeans) {
+//                        huiFuBeanBox.remove(bean);
+//                    }
+//                } catch (Exception e) {
+//                    Log.d("WebsocketPushMsg", e.getMessage() + "数据同步");
+//                }
+//            }
+//        });
+//    }
 
     //信鸽信息处理
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -1881,75 +1875,75 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
    //     mNfcAdapter.disableForegroundDispatch(this);
    // }
 
-    public void processIntent(Intent intent) {
-        //  String data = null;
-        Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        // String[] techList = tag.getTechList();
-        // Log.d("Mian", "tag.describeContents():" + tag.describeContents());
-        byte[] ID;
-        //  data = tag.toString();
-        if (tag == null)
-            return;
-        ID = tag.getId();
-//        data += "\n\nUID:\n" + byteToString(ID);
-//        data += "\nData format:";
-//        for (String tech : techList) {
-//            data += "\n" + tech;
+//    public void processIntent(Intent intent) {
+//        //  String data = null;
+//        Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+//        // String[] techList = tag.getTechList();
+//        // Log.d("Mian", "tag.describeContents():" + tag.describeContents());
+//        byte[] ID;
+//        //  data = tag.toString();
+//        if (tag == null)
+//            return;
+//        ID = tag.getId();
+////        data += "\n\nUID:\n" + byteToString(ID);
+////        data += "\nData format:";
+////        for (String tech : techList) {
+////            data += "\n" + tech;
+////        }
+////         Log.d("MianBanJiActivity3", byteToString(ID));
+//        String sdfds = byteToString(ID);
+//        if (sdfds != null) {
+//            Log.d("MianBanJiActivity3", sdfds);
+//            sdfds = sdfds.toUpperCase();
+//            List<IDCardBean> idCardBeanList = idCardBeanBox.query().equal(IDCardBean_.idCard, sdfds).build().find();
+//            if (idCardBeanList.size() > 0) {
+//                Toast tastyToast = TastyToast.makeText(MianBanJiActivity3.this, "验证成功!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+//                tastyToast.setGravity(Gravity.CENTER, 0, 0);
+//                tastyToast.show();
+//                soundPool.play(musicId.get(1), 1, 1, 0, 0, 1);
+//                DengUT.getInstance(baoCunBean).openDool();
+//                IDCardBean cardBean=idCardBeanList.get(0);
+//               // link_shuaka(sdfds,cardBean.getName());
+//                //启动定时器或重置定时器
+//                if (task != null) {
+//                    task.cancel();
+//                    task = new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            Message message = new Message();
+//                            message.what = 222;
+//                            mHandler.sendMessage(message);
+//                        }
+//                    };
+//                    timer.schedule(task, 6000);
+//                } else {
+//                    task = new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            Message message = new Message();
+//                            message.what = 222;
+//                            mHandler.sendMessage(message);
+//                        }
+//                    };
+//                    timer.schedule(task, 6000);
+//                }
+//
+//                IDCardTakeBean takeBean=new IDCardTakeBean();
+//                takeBean.setIdCard(sdfds);
+//                takeBean.setName(cardBean.getName());
+//                takeBean.setTime(System.currentTimeMillis());
+//                idCardTakeBeanBox.put(takeBean);
+//
+//            } else {
+//                Toast tastyToast = TastyToast.makeText(MianBanJiActivity3.this, "验证失败!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+//                tastyToast.setGravity(Gravity.CENTER, 0, 0);
+//                tastyToast.show();
+//                soundPool.play(musicId.get(2), 1, 1, 0, 0, 1);
+//            }
 //        }
-//         Log.d("MianBanJiActivity3", byteToString(ID));
-        String sdfds = byteToString(ID);
-        if (sdfds != null) {
-            Log.d("MianBanJiActivity3", sdfds);
-            sdfds = sdfds.toUpperCase();
-            List<IDCardBean> idCardBeanList = idCardBeanBox.query().equal(IDCardBean_.idCard, sdfds).build().find();
-            if (idCardBeanList.size() > 0) {
-                Toast tastyToast = TastyToast.makeText(MianBanJiActivity3.this, "验证成功!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
-                tastyToast.setGravity(Gravity.CENTER, 0, 0);
-                tastyToast.show();
-                soundPool.play(musicId.get(1), 1, 1, 0, 0, 1);
-                DengUT.getInstance(baoCunBean).openDool();
-                IDCardBean cardBean=idCardBeanList.get(0);
-               // link_shuaka(sdfds,cardBean.getName());
-                //启动定时器或重置定时器
-                if (task != null) {
-                    task.cancel();
-                    task = new TimerTask() {
-                        @Override
-                        public void run() {
-                            Message message = new Message();
-                            message.what = 222;
-                            mHandler.sendMessage(message);
-                        }
-                    };
-                    timer.schedule(task, 6000);
-                } else {
-                    task = new TimerTask() {
-                        @Override
-                        public void run() {
-                            Message message = new Message();
-                            message.what = 222;
-                            mHandler.sendMessage(message);
-                        }
-                    };
-                    timer.schedule(task, 6000);
-                }
-
-                IDCardTakeBean takeBean=new IDCardTakeBean();
-                takeBean.setIdCard(sdfds);
-                takeBean.setName(cardBean.getName());
-                takeBean.setTime(System.currentTimeMillis());
-                idCardTakeBeanBox.put(takeBean);
-
-            } else {
-                Toast tastyToast = TastyToast.makeText(MianBanJiActivity3.this, "验证失败!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
-                tastyToast.setGravity(Gravity.CENTER, 0, 0);
-                tastyToast.show();
-                soundPool.play(musicId.get(2), 1, 1, 0, 0, 1);
-            }
-        }
-
-
-    }
+//
+//
+//    }
 
     /**
      * 将byte数组转化为字符串
@@ -2035,9 +2029,9 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
     //usb读卡器输出
     @Override
     public void onScanSuccess(String barcode) {
-        Log.d("MianBanJiActivity3", barcode+"dddddd");
+       // Log.d("MianBanJiActivity3", barcode+"dddddd");
         if (barcode!=null && !barcode.equals("") && !isLink){
-            Toast.makeText(MianBanJiActivity3.this,barcode+"",Toast.LENGTH_SHORT).show();
+           // Toast.makeText(MianBanJiActivity3.this,barcode+"",Toast.LENGTH_SHORT).show();
             Message message = new Message();
             message.what = 999;
             message.obj=barcode.trim();

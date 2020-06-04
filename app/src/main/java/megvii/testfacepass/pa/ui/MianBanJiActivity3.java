@@ -2,7 +2,6 @@ package megvii.testfacepass.pa.ui;
 
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,18 +11,12 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-
-
-
-
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.nfc.NfcAdapter;
-import android.nfc.NfcManager;
 import android.nfc.Tag;
 
 import android.os.Bundle;
@@ -75,8 +68,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,8 +80,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-
-import Lib.Reader.MT.Function;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -111,7 +100,6 @@ import megvii.testfacepass.pa.MyApplication;
 import megvii.testfacepass.pa.R;
 import megvii.testfacepass.pa.beans.AddFacesBean;
 import megvii.testfacepass.pa.beans.BaoCunBean;
-import megvii.testfacepass.pa.beans.DaKaBean;
 import megvii.testfacepass.pa.beans.FailedPersonBean;
 import megvii.testfacepass.pa.beans.HuiFuBean;
 import megvii.testfacepass.pa.beans.IDCardBean;
@@ -126,15 +114,11 @@ import megvii.testfacepass.pa.beans.TimeStateBean;
 import megvii.testfacepass.pa.beans.XGBean;
 import megvii.testfacepass.pa.beans.ZhiLingBean;
 import megvii.testfacepass.pa.camera.CameraManager;
-
 import megvii.testfacepass.pa.camera.CameraPreview;
 
 import megvii.testfacepass.pa.camera.CameraPreviewData;
-
 import megvii.testfacepass.pa.dialog.MiMaDialog3;
 import megvii.testfacepass.pa.dialog.MiMaDialog4;
-
-
 import megvii.testfacepass.pa.utils.BitmapUtil;
 import megvii.testfacepass.pa.utils.DateUtils;
 import megvii.testfacepass.pa.utils.DengUT;
@@ -149,7 +133,6 @@ import megvii.testfacepass.pa.utils.SettingVar;
 import megvii.testfacepass.pa.view.GlideRoundTransform;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -200,9 +183,9 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
    // private String serialnumber = GetDeviceId.getDeviceId(MyApplication.myApplication);
 
     private OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .writeTimeout(20000, TimeUnit.MILLISECONDS)
-            .connectTimeout(20000, TimeUnit.MILLISECONDS)
-            .readTimeout(20000, TimeUnit.MILLISECONDS)
+            .writeTimeout(8000, TimeUnit.MILLISECONDS)
+            .connectTimeout(8000, TimeUnit.MILLISECONDS)
+            .readTimeout(8000, TimeUnit.MILLISECONDS)
 //				    .cookieJar(new CookiesManager())
             //        .retryOnConnectionFailure(true)
             .build();
@@ -231,7 +214,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
     private ConcurrentHashMap<Long, Integer> concurrentHashMap = new ConcurrentHashMap<Long, Integer>();
     private Box<BaoCunBean> baoCunBeanDao = null;
     private Box<HuiFuBean> huiFuBeanBox = null;
-    private Box<DaKaBean> daKaBeanBox = null;
+    //private Box<DaKaBean> daKaBeanBox = null;
     private BaoCunBean baoCunBean = null;
     private TimeChangeReceiver timeChangeReceiver;
     private Handler mHandler;
@@ -250,7 +233,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
     private ReadThread3 mReadThread3;
     //private DogThread dogThread;
     //private InputStream mInputStream;
-    private int w, h, cameraH, cameraW;
+   // private int w, h, cameraH, cameraW;
    // private float s1 = 0, s2 = 0;
     private Timer mTimer;//距离感应
     private TimerTask mTimerTask;//距离感应
@@ -271,7 +254,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
     LinearInterpolator lir_gif;
     private Box<IDCardTakeBean> idCardTakeBeanBox=MyApplication.myApplication.getIdCardTakeBeanBox();
     private int jiqiType=-1;
-    private boolean isGET = true;
+  //  private boolean isGET = true;
     private int cishu=4;
     private int jidianqi=6000;
     private Lztek lztek=null;
@@ -304,7 +287,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         huiFuBeanBox = MyApplication.myApplication.getHuiFuBeanBox();
         baoCunBeanDao = MyApplication.myApplication.getBaoCunBeanBox();
-        daKaBeanBox=MyApplication.myApplication.getDaKaBeanBox();
+      //  daKaBeanBox=MyApplication.myApplication.getDaKaBeanBox();
         baoCunBean = baoCunBeanDao.get(123456L);
         mDetectResultQueue = new ArrayBlockingQueue<FacePassDetectionResult>(5);
         mFeedFrameQueue = new ArrayBlockingQueue<FacePassImage>(1);
@@ -367,7 +350,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
         musicId.put(2, soundPool.load(this, R.raw.bunengjinru, 1));//不能进入
         musicId.put(3, soundPool.load(this, R.raw.qingshualian, 1));//请刷脸
         musicId.put(4, soundPool.load(this, R.raw.wangluobutong, 1));//网络不通
-
+        musicId.put(5, soundPool.load(this, R.raw.shujuyichang, 1));//数据异常
         //sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         initView();
@@ -385,9 +368,9 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                     cishu=baoCunBean.getMoshengrenPanDing();
                 }
 
-                FacePassHandler.initSDK(getApplicationContext());
-                FacePassUtil util = new FacePassUtil();
-                util.init(MianBanJiActivity3.this, getApplicationContext(), SettingVar.faceRotation, baoCunBean);
+            //    FacePassHandler.initSDK(getApplicationContext());
+             //   FacePassUtil util = new FacePassUtil();
+             //   util.init(MianBanJiActivity3.this, getApplicationContext(), SettingVar.faceRotation, baoCunBean);
 
             } catch (Exception e) {
                TastyToast.makeText(MianBanJiActivity3.this,"初始化失败"+e.getMessage(),TastyToast.LENGTH_LONG,TastyToast.ERROR).show();
@@ -395,31 +378,31 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             }
         }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SystemClock.sleep(4000);
-                w = cameraView.getMeasuredWidth();
-                h = cameraView.getMeasuredHeight();
-                cameraH = manager.getCameraheight();
-                cameraW = manager.getCameraWidth();
-
-                Message message = new Message();
-                message.what = 999;
-                message.obj="3304698169";
-                mHandler.sendMessage(message);
-//                try {
-//                    FacePassCompareResult result= paAccessControl.compare(BitmapFactory.decodeResource(getResources(),R.drawable.aa),BitmapFactory.decodeResource(getResources(),R.drawable.bb),false);
-//                    Log.d("MianBanJiActivity3", "result.score:" + result.score);
-//                    Log.d("MianBanJiActivity3", "result.compareThreshold:" + result.compareThreshold);
-//                } catch (FacePassException e) {
-//                    e.printStackTrace();
-//                }
-
-                //   s1 = (float) w / (float) cameraH;
-              //  s2 = (float) h / (float) cameraW;
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//             //   SystemClock.sleep(4000);
+//                //w = cameraView.getMeasuredWidth();
+//              //  h = cameraView.getMeasuredHeight();
+//              //  cameraH = manager.getCameraheight();
+//              //  cameraW = manager.getCameraWidth();
+//
+//             //   Message message = new Message();
+//             //   message.what = 999;
+//              //  message.obj="3304698169";
+//              //  mHandler.sendMessage(message);
+////                try {
+////                    FacePassCompareResult result= paAccessControl.compare(BitmapFactory.decodeResource(getResources(),R.drawable.aa),BitmapFactory.decodeResource(getResources(),R.drawable.bb),false);
+////                    Log.d("MianBanJiActivity3", "result.score:" + result.score);
+////                    Log.d("MianBanJiActivity3", "result.compareThreshold:" + result.compareThreshold);
+////                } catch (FacePassException e) {
+////                    e.printStackTrace();
+////                }
+//
+//                //   s1 = (float) w / (float) cameraH;
+//              //  s2 = (float) h / (float) cameraW;
+//            }
+//        }).start();
 
 
 
@@ -436,29 +419,29 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             @Override
             public boolean handleMessage(@NotNull Message msg) {
                 switch (msg.what) {
-                    case 111: {
-                        Subject subject = (Subject) msg.obj;
-                        //Log.d("MianBanJiActivity3", "subject:" + subject);
-                        if (subject.getTeZhengMa() != null) {
-                            //  Log.d("MianBanJiActivity3", "ddd3");
-                         //   faceView.setTC(BitmapFactory.decodeFile(MyApplication.SDPATH3 + File.separator + subject.getTeZhengMa() + ".png")
-                            //        , subject.getName(), subject.getDepartmentName());
-
-                            DaKaBean daKaBean=new DaKaBean();
-                            daKaBean.setId2(subject.getTeZhengMa());
-                            daKaBean.setName(subject.getPerson_name());
-                            daKaBean.setBumen(subject.getPerson_type());
-                            daKaBean.setTime2(System.currentTimeMillis());
-                            daKaBeanBox.put(daKaBean);
-
-                        } else {
-                            //  Log.d("MianBanJiActivity3", "ddd4");
-                            soundPool.play(musicId.get(2), 1, 1, 0, 0, 1);
-                            //faceView.setTC(BitmapUtil.rotateBitmap(msrBitmap, SettingVar.msrBitmapRotation), subject.getName(), subject.getDepartmentName());
-                        }
-
-                        break;
-                    }
+//                    case 111: {
+//                        Subject subject = (Subject) msg.obj;
+//                        //Log.d("MianBanJiActivity3", "subject:" + subject);
+//                        if (subject.getTeZhengMa() != null) {
+//                            //  Log.d("MianBanJiActivity3", "ddd3");
+//                         //   faceView.setTC(BitmapFactory.decodeFile(MyApplication.SDPATH3 + File.separator + subject.getTeZhengMa() + ".png")
+//                            //        , subject.getName(), subject.getDepartmentName());
+//
+//                            DaKaBean daKaBean=new DaKaBean();
+//                            daKaBean.setId2(subject.getTeZhengMa());
+//                            daKaBean.setName(subject.getPerson_name());
+//                            daKaBean.setBumen(subject.getPerson_type());
+//                            daKaBean.setTime2(System.currentTimeMillis());
+//                            daKaBeanBox.put(daKaBean);
+//
+//                        } else {
+//                            //  Log.d("MianBanJiActivity3", "ddd4");
+//                            soundPool.play(musicId.get(2), 1, 1, 0, 0, 1);
+//                            //faceView.setTC(BitmapUtil.rotateBitmap(msrBitmap, SettingVar.msrBitmapRotation), subject.getName(), subject.getDepartmentName());
+//                        }
+//
+//                        break;
+//                    }
                     case 222: {//关门
                         DengUT.getInstance(baoCunBean).closeDool();
                         break;
@@ -475,7 +458,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         break;
                     case 999:
                         DengUT.getInstance(baoCunBean).openLOED();
-
+                       // showUIResult(2,"","");
                         String card= (String) msg.obj;
                         if (card!=null){
                             try {
@@ -485,92 +468,92 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                                 e.printStackTrace();
                                 isLink=false;
                             }
-                           List<Subject> subjectList= subjectBox.query().equal(Subject_.ic_card,card).build().find();
-                           if (subjectList.size()>1){
-                               StringBuilder builder=new StringBuilder();
-                               for (Subject subject:subjectList){
-                                   builder.append(subject.getPerson_name());
-                                   builder.append(",");
-                               }
-                               Toast tastyToast = TastyToast.makeText(MianBanJiActivity3.this, builder.toString()+"ID卡号重复,打卡失败,请重新设置", TastyToast.LENGTH_LONG, TastyToast.ERROR);
-                               tastyToast.setGravity(Gravity.CENTER, 0, 0);
-                               tastyToast.show();
-                               if (!MianBanJiActivity3.this.isFinishing())
-                                   closePing();
-
-                           }else if (subjectList.size()==1){
-                               DengUT.getInstance(baoCunBean).openDool();
-                               //启动定时器或重置定时器
-                               if (task != null) {
-                                   task.cancel();
-                                   //timer.cancel();
-                                   task = new TimerTask() {
-                                       @Override
-                                       public void run() {
-                                           Message message = new Message();
-                                           message.what = 222;
-                                           mHandler.sendMessage(message);
-                                           //关屏
-                                           Message message2 = new Message();
-                                           message2.what = 444;
-                                           mHandler.sendMessage(message2);
-                                       }
-                                   };
-                                   timer.schedule(task, jidianqi);
-                               } else {
-                                   task = new TimerTask() {
-                                       @Override
-                                       public void run() {
-                                           Message message = new Message();
-                                           message.what = 222;
-                                           mHandler.sendMessage(message);
-                                            //关屏
-                                           Message message2 = new Message();
-                                           message2.what = 444;
-                                           mHandler.sendMessage(message2);
-
-                                       }
-                                   };
-                                   timer.schedule(task, jidianqi);
-                               }
-
-                               faceLinearLayout.setVisibility(View.VISIBLE);
-                               faceName.setText(subjectList.get(0).getPerson_name());
-                               if (paAccessControl!=null){
-                                   try {
-                                       Glide.with(MyApplication.myApplication)
-                                               .load(new BitmapDrawable(getResources(),paAccessControl.getFaceImage(subjectList.get(0).getTeZhengMa().getBytes())))
-                                               .apply(myOptions)
-                                               .into(faceImage);
-                                   } catch (FacePassException e) {
-                                       e.printStackTrace();
-                                   }
-                                   try {
-                                     //  link_shangchuanshualian(subjectList.get(0).getSid(),paAccessControl.getFaceImage(subjectList.get(0).getTeZhengMa().getBytes()),subjectList.get(0).getPeopleType()+"");
-                                   } catch (Exception e) {
-                                       e.printStackTrace();
-                                   }
-                               }
-                               new Thread(new Runnable() {
-                                   @Override
-                                   public void run() {
-                                       SystemClock.sleep(2200);
-                                       runOnUiThread(new Runnable() {
-                                           @Override
-                                           public void run() {
-                                               faceLinearLayout.setVisibility(View.GONE);
-                                           }
-                                       });
-                                   }
-                               }).start();
-                           }else {
-//                               Toast tastyToast = TastyToast.makeText(MianBanJiActivity3.this, "此ID卡不存在", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+//                           List<Subject> subjectList= subjectBox.query().equal(Subject_.ic_card,card).build().find();
+//                           if (subjectList.size()>1){
+//                               StringBuilder builder=new StringBuilder();
+//                               for (Subject subject:subjectList){
+//                                   builder.append(subject.getPerson_name());
+//                                   builder.append(",");
+//                               }
+//                               Toast tastyToast = TastyToast.makeText(MianBanJiActivity3.this, builder.toString()+"ID卡号重复,打卡失败,请重新设置", TastyToast.LENGTH_LONG, TastyToast.ERROR);
 //                               tastyToast.setGravity(Gravity.CENTER, 0, 0);
 //                               tastyToast.show();
-                               soundPool.play(musicId.get(2), 1, 1, 0, 0, 1);
-                               if (!MianBanJiActivity3.this.isFinishing())
-                               closePing();
-                           }
+//                               if (!MianBanJiActivity3.this.isFinishing())
+//                                   closePing();
+//
+//                           }else if (subjectList.size()==1){
+//                               DengUT.getInstance(baoCunBean).openDool();
+//                               //启动定时器或重置定时器
+//                               if (task != null) {
+//                                   task.cancel();
+//                                   //timer.cancel();
+//                                   task = new TimerTask() {
+//                                       @Override
+//                                       public void run() {
+//                                           Message message = new Message();
+//                                           message.what = 222;
+//                                           mHandler.sendMessage(message);
+//                                           //关屏
+//                                           Message message2 = new Message();
+//                                           message2.what = 444;
+//                                           mHandler.sendMessage(message2);
+//                                       }
+//                                   };
+//                                   timer.schedule(task, jidianqi);
+//                               } else {
+//                                   task = new TimerTask() {
+//                                       @Override
+//                                       public void run() {
+//                                           Message message = new Message();
+//                                           message.what = 222;
+//                                           mHandler.sendMessage(message);
+//                                            //关屏
+//                                           Message message2 = new Message();
+//                                           message2.what = 444;
+//                                           mHandler.sendMessage(message2);
+//
+//                                       }
+//                                   };
+//                                   timer.schedule(task, jidianqi);
+//                               }
+//
+//                               faceLinearLayout.setVisibility(View.VISIBLE);
+//                               faceName.setText(subjectList.get(0).getPerson_name());
+//                               if (paAccessControl!=null){
+//                                   try {
+//                                       Glide.with(MyApplication.myApplication)
+//                                               .load(new BitmapDrawable(getResources(),paAccessControl.getFaceImage(subjectList.get(0).getTeZhengMa().getBytes())))
+//                                               .apply(myOptions)
+//                                               .into(faceImage);
+//                                   } catch (FacePassException e) {
+//                                       e.printStackTrace();
+//                                   }
+//                                   try {
+//                                     //  link_shangchuanshualian(subjectList.get(0).getSid(),paAccessControl.getFaceImage(subjectList.get(0).getTeZhengMa().getBytes()),subjectList.get(0).getPeopleType()+"");
+//                                   } catch (Exception e) {
+//                                       e.printStackTrace();
+//                                   }
+//                               }
+//                               new Thread(new Runnable() {
+//                                   @Override
+//                                   public void run() {
+//                                       SystemClock.sleep(2200);
+//                                       runOnUiThread(new Runnable() {
+//                                           @Override
+//                                           public void run() {
+//                                               faceLinearLayout.setVisibility(View.GONE);
+//                                           }
+//                                       });
+//                                   }
+//                               }).start();
+//                           }else {
+////                               Toast tastyToast = TastyToast.makeText(MianBanJiActivity3.this, "此ID卡不存在", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+////                               tastyToast.setGravity(Gravity.CENTER, 0, 0);
+////                               tastyToast.show();
+//                               soundPool.play(musicId.get(2), 1, 1, 0, 0, 1);
+//                               if (!MianBanJiActivity3.this.isFinishing())
+//                               closePing();
+//                           }
                         }
 
                         break;
@@ -646,7 +629,12 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                 mReadThread3.start();
             }
         }
-       Log.d("MianBanJiActivity3", subjectBox.getAll().get(0).getEnd_time());
+
+        for (Subject subject : subjectBox.getAll()) {
+            Log.d("MianBanJiActivity3", subject.getPerson_id());
+            Log.d("MianBanJiActivity3", subject.getPerson_name());
+        }
+
 
 
     }
@@ -774,7 +762,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                     // Log.d("MianBanJiActivity3", "value:" + value);
                     if (value==1){//有人
                         isCLOSDLED=true;
-                        // Log.d("MianBanJiActivity3", "value:" + value);
+                         Log.d("MianBanJiActivity3", "value:" + value);
                         isR=true;
                         Message message = new Message();
                         message.what = 333;
@@ -1015,7 +1003,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                     if (detectionResult == null || detectionResult.faceList.length <= 0) {
                        // Log.d("FeedFrameThread", "没人"+DengUT.isOPEN);
                         if (DengUT.isOPEN || DengUT.isOPENRed || DengUT.isOPENGreen) {
-                           // Log.d("FeedFrameThread", "没人2");
+                            Log.d("MianBanJiActivity3", "没人2");
                             DengUT.isOPEN = false;
                             DengUT.isOPENGreen = false;
                             DengUT.isOPENRed = false;
@@ -1102,6 +1090,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                             Message message = new Message();
                             message.what = 333;
                             mHandler.sendMessage(message);
+                           // Log.d("FeedFrameThread", group_name);
                         }
                     }
                     //     }
@@ -1169,21 +1158,21 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                                 failedList.add(new FailedPersonBean(personListBean.getPerson_id(),"图片下载失败"+e.getMessage()));
                             }
                             if (bitmap != null) {//有图片
-                                BitmapUtil.saveBitmapToSD(bitmap, MyApplication.SDPATH3,  "aaabbb.png");
-                                File filef = new File(MyApplication.SDPATH3 + File.separator +  "aaabbb.png");
-                                Log.d("TanChuangThread",  "未压缩前:filef.length():" + filef.length());
+                                BitmapUtil.saveBitmapToSD(bitmap, MyApplication.SDPATH3,  "aaabbb.jpg");
+                               // File filef = new File(MyApplication.SDPATH3 + File.separator +  "aaabbb.png");
+                               // Log.d("TanChuangThread",  "未压缩前:filef.length():" + filef.length());
                                 File file = Luban.with(MianBanJiActivity3.this)
-                                        .load(MyApplication.SDPATH3 + File.separator +  "aaabbb.png")
+                                        .load(MyApplication.SDPATH3 + File.separator +  "aaabbb.jpg")
                                         .ignoreBy(600)
                                         .setTargetDir(MyApplication.SDPATH3 + File.separator)
-                                        .get(MyApplication.SDPATH3 + File.separator +  "aaabbb.png");
+                                        .get(MyApplication.SDPATH3 + File.separator +  "aaabbb.jpg");
 
                                 if (file == null) {
                                     Log.d("TanChuangThread", "图片压缩失败");
                                     failedList.add(new FailedPersonBean(personListBean.getPerson_id(),"图片压缩失败"));
                                     continue;
                                 }
-                                Log.d("TanChuangThread",  "压缩后:file.length():" + file.length());
+                               // Log.d("TanChuangThread",  "压缩后:file.length():" + file.length());
                                 detectResult = paAccessControl.addFace(BitmapFactory.decodeFile(file.getAbsolutePath()));
                                 if (detectResult != null && detectResult.result==0) {
                                     byte [] faceToken=detectResult.faceToken;
@@ -1420,13 +1409,13 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                                             FacePassImage images = detectionResult.images[i];
                                             if (images.trackId == result.trackId) {
                                                 final Bitmap fileBitmap = nv21ToBitmap.nv21ToBitmap(images.image, images.width, images.height);
-                                                link_shangchuanshualian(subject.getTeZhengMa(), fileBitmap,result.detail.searchScore+"","0",subject.getPerson_type());
+                                                link_shangchuanshualian(subject.getPerson_id(), fileBitmap,result.detail.searchScore+"","0",subject.getPerson_type(),subject.getPerson_name());
                                                 //  String paths = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "ruitongzipmbj";
                                                 break;
                                             }
                                         }
-                                        showUIResult(4,subject.getPerson_name(),subject.getPerson_type());
-                                        DengUT.isOPEN = true;
+                                       // showUIResult(4,subject.getPerson_name(),"认证通过");
+                                        //DengUT.isOPEN = true;
                                 }else {//刷卡模式
                                         for (int i = 0; i < detectionResult.faceList.length; i++) {
                                             FacePassImage images = detectionResult.images[i];
@@ -1436,10 +1425,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                                             }
                                         }
                                  }
-
-
                                  //   msrBitmap = nv21ToBitmap.nv21ToBitmap(result.feedback.rgbImage.image, result.feedback.rgbImage.width, result.feedback.rgbImage.height);
-
                                 } else {
                                     EventBus.getDefault().post("没有查询到人员信息");
                                 }
@@ -1461,21 +1447,6 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                                     }
                                     //判断次数超过3次
                                     if (concurrentHashMap.get(result.trackId) == cishu) {
-                                        Subject subject1 = new Subject();
-                                        // subject1.setW(bitmap.getWidth());
-                                        // subject1.setH(bitmap.getHeight());
-                                        //图片在bitmabToBytes方法里面做了循转
-                                        // subject1.setTxBytes(BitmapUtil.bitmabToBytes(bitmap));
-                                        subject1.setId(System.currentTimeMillis());
-                                        subject1.setPerson_name("陌生人");
-                                        subject1.setTeZhengMa(null);
-                                        subject1.setGroup_type("3");
-                                        subject1.setPerson_type("暂无进入权限!");
-                                        // linkedBlockingQueue.offer(subject1);
-                                        Message message2 = Message.obtain();
-                                        message2.what = 111;
-                                        message2.obj = subject1;
-                                        mHandler.sendMessage(message2);
 
                                         if (!DengUT.isOPENRed) {
                                             DengUT.isOPENRed = true;
@@ -1485,17 +1456,16 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                                         for (int i = 0; i < detectionResult.faceList.length; i++) {
                                             FacePassImage images = detectionResult.images[i];
                                             if (images.trackId == result.trackId) {
+                                                Bitmap fileBitmap = nv21ToBitmap.nv21ToBitmap(images.image, images.width, images.height);
+                                                link_shangchuanshualian("", fileBitmap,result.detail.searchScore+"","1","5","");
                                                 //    Log.d("RecognizeThread", "detectionResult.faceList[i].mouthOccAttr.is_valid:" + detectionResult.faceList[i].mouthOccAttr.is_valid);
                                                 //   Log.d("RecognizeThread", "detectionResult.faceList[i].mouthOccAttr.mouth_occ_status:" + detectionResult.faceList[i].mouthOccAttr.mouth_occ_status);
-                                                //   final Bitmap fileBitmap = nv21ToBitmap.nv21ToBitmap(images.image, images.width, images.height);
-                                                //  String paths = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "ruitongzipmbj";
-                                                //  boolean tt = nv21ToBitmap.saveBitmap(fileBitmap, paths, time + ".png");
-                                                //   link_shangchuanshualian(subject.getSid(), fileBitmap, subject.getPeopleType() + "");
                                                 break;
                                             }
                                         }
-                                        showUIResult(3,"陌生人","");
-                                        DengUT.isOPEN = true;
+                                      //  showUIResult(3,"陌生人","");
+                                      //  DengUT.isOPEN = true;
+
                                         //   msrBitmap = nv21ToBitmap.nv21ToBitmap(result.feedback.rgbImage.image, result.feedback.rgbImage.width, result.feedback.rgbImage.height);
                                         //   Log.d("RecognizeThread", "入库"+tID);
                                     }
@@ -2169,7 +2139,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         tvTime_Ir.setVisibility(View.VISIBLE);//时间
                         tvFaceTips_Ir.setVisibility(View.VISIBLE);//识别提示
                         tvName_Ir.setText(name);
-                        tvTime_Ir.setText("部门:"+detectFaceTime);
+                        tvTime_Ir.setText(detectFaceTime);
                      //   tvFaceTips_Ir.setText(kouzhao);
                         break;
                     }
@@ -2270,6 +2240,8 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             public void onFailure(Call call, IOException e) {
                 Log.d("AllConnects", "请求失败"+e.getMessage());
                 EventBus.getDefault().post("网络请求失败");
+                stopMedie();
+                soundPool.play(musicId.get(4), 1, 1, 0, 0, 1);
             }
             @Override
             public void onResponse(Call call, Response response) {
@@ -2412,6 +2384,8 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             public void onFailure(Call call, IOException e) {
                 Log.d("AllConnects", "请求失败"+e.getMessage());
                 EventBus.getDefault().post("网络请求失败");
+                stopMedie();
+                soundPool.play(musicId.get(4), 1, 1, 0, 0, 1);
             }
             @Override
             public void onResponse(Call call, Response response) {
@@ -2503,6 +2477,8 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             public void onFailure(Call call, IOException e) {
                 Log.d("AllConnects", "请求失败"+e.getMessage());
                 EventBus.getDefault().post("网络请求失败");
+                stopMedie();
+                soundPool.play(musicId.get(4), 1, 1, 0, 0, 1);
             }
             @Override
             public void onResponse(Call call, Response response) {
@@ -2537,6 +2513,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
         if (baoCunBean.getHoutaiDiZhi()==null){
             EventBus.getDefault().post("后台地址不正确");
             isLink=false;
+            group_name="facepasstestx";
             return;
         }
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
@@ -2548,6 +2525,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
         } catch (JSONException e) {
             e.printStackTrace();
             isLink=false;
+            group_name="facepasstestx";
         }
         Log.d("MianBanJiActivity3", "objectParams:" + object.toString());
         RequestBody body = RequestBody.create(object.toString(), JSON);
@@ -2564,7 +2542,10 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             public void onFailure(Call call, IOException e) {
                 Log.d("AllConnects", "请求失败"+e.getMessage());
                 EventBus.getDefault().post("网络请求失败");
+                stopMedie();
+                soundPool.play(musicId.get(4), 1, 1, 0, 0, 1);
                 isLink=false;
+                group_name="facepasstestx";
             }
             @Override
             public void onResponse(Call call, Response response) {
@@ -2580,6 +2561,8 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                     IcCardInfosBean icCardInfosBean = gson.fromJson(jsonObject, IcCardInfosBean.class);
                     if (icCardInfosBean.getCode()==0 && icCardInfosBean.isSuccess()){
                         //语音请刷脸
+                        stopMedie();
+                        soundPool.play(musicId.get(3), 1, 1, 0, 0, 1);
                         //开始收集信息换掉grouname
                         group_name="facepasstestx2";
                         paAccessControl.reset();
@@ -2590,8 +2573,16 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                             @Override
                             public void run() {
                                 while (f){
+                                    Log.d("TanChuangThread", "cardBitmap:" + cardBitmap);
                                     if (cardBitmap!=null){
-                                        Bitmap bitmap_c=cardBitmap;
+                                        Bitmap bitmap_c = BitmapUtil.rotateBitmap(cardBitmap, SettingVar.msrBitmapRotation);
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                faceImage.setImageBitmap(bitmap_c);
+                                            }
+                                        });
+                                        float io = 0;
                                         for (IcCardInfosBean.PersonListBean personListBean : icCardInfosBean.getPerson_list()) {
                                             Bitmap bitmap = null;
                                             try {
@@ -2602,41 +2593,60 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                                                             .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                                                             .get();
                                                 } else {
+                                                    Log.d("TanChuangThread", "继续");
                                                     continue;
                                                 }
                                                 if (bitmap != null) {//有图片
-                                                    BitmapUtil.saveBitmapToSD(bitmap, MyApplication.SDPATH3, "aaabbbccc.png");
-                                                    File filef = new File(MyApplication.SDPATH3 + File.separator + "aaabbbccc.png");
-                                                    Log.d("TanChuangThread", "未压缩前:filef.length():" + filef.length());
+                                                    BitmapUtil.saveBitmapToSD(bitmap, MyApplication.SDPATH3, "aaabbbccc.jpg");
+                                                   // File filef = new File(MyApplication.SDPATH3 + File.separator + "aaabbbccc.png");
+                                                    Log.d("TanChuangThread", "未压缩前:filef.length():");
                                                     File file = Luban.with(MianBanJiActivity3.this)
-                                                            .load(MyApplication.SDPATH3 + File.separator + "aaabbbccc.png")
+                                                            .load(MyApplication.SDPATH3 + File.separator + "aaabbbccc.jpg")
                                                             .ignoreBy(600)
                                                             .setTargetDir(MyApplication.SDPATH3 + File.separator)
-                                                            .get(MyApplication.SDPATH3 + File.separator + "aaabbbccc.png");
+                                                            .get(MyApplication.SDPATH3 + File.separator + "aaabbbccc.jpg");
 
                                                     if (file != null) {
-
+                                                        Log.d("TanChuangThread", file.getAbsolutePath());
+                                                       Bitmap bb= BitmapFactory.decodeFile(file.getAbsolutePath());
+                                                       Log.d("TanChuangThread", "bb.getWidth():" + bb.getWidth());
                                                         FacePassCompareResult result= paAccessControl.compare(bitmap_c,BitmapFactory.decodeFile(file.getAbsolutePath()),false);
-                                                        if (result.score>=72){
-
+                                                        io =result.score;
+                                                        Log.d("TanChuangThread", "io:" + io);
+                                                        Log.d("MianBanJiActivity3", "file.delete():" + file.delete());
+                                                        if (result.score>=72){//通过
+                                                            link_shangchuanshualian(personListBean.getPerson_id(), bitmap_c,result.score+"","0",personListBean.getPerson_type(),personListBean.getPerson_name());
+                                                            Log.d("TanChuangThread", "bb():" + bb.getWidth());
+                                                            break;//退出里面循环
                                                         }
                                                     }else {
                                                         Log.d("TanChuangThread", "图片压缩失败");
                                                     }
                                                 }
-
                                             } catch (Exception e) {
                                                 e.printStackTrace();
-
                                             }
-
                                         }
-
+                                        Log.d("TanChuangThread", "io2:" + io);
+                                        if (io<72){
+                                            if (!DengUT.isOPENRed) {
+                                                DengUT.isOPENRed = true;
+                                                DengUT.getInstance(baoCunBean).openRed();
+                                            }
+                                            link_shangchuanshualian("", bitmap_c,io+"","1","5","");
+                                            break;
+                                        }else {//退出外面循环
+                                            break;
+                                        }
                                     }else {
                                         i++;
                                         SystemClock.sleep(600);
-                                        if (i>=8){
+                                        Log.d("TanChuangThread", "加1");
+                                        if (i>=20){
                                             f=false;
+                                            isLink=false;
+                                            group_name="facepasstestx";
+                                            Log.d("TanChuangThread", "重置");
                                         }
                                     }
                                 }
@@ -2645,15 +2655,16 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                             }
                         }).start();
 
-
                     }else {
                         //登录失败
                         EventBus.getDefault().post("获取ic卡号对应信息成功失败");
                         isLink=false;
+                        group_name="facepasstestx";
                     }
                 }catch (Exception e){
                     EventBus.getDefault().post("获取ic卡号对应信息成功失败"+e.getMessage());
                     isLink=false;
+                    group_name="facepasstestx";
                 }
 
             }
@@ -2704,6 +2715,8 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             public void onFailure(Call call, IOException e) {
                 Log.d("AllConnects", "请求失败"+e.getMessage());
                 EventBus.getDefault().post("网络请求失败");
+                stopMedie();
+                soundPool.play(musicId.get(4), 1, 1, 0, 0, 1);
             }
             @Override
             public void onResponse(Call call, Response response) {
@@ -2770,6 +2783,13 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                 .post(body)
                 .url(baoCunBean.getHoutaiDiZhi()+"/device-notify");
 
+         OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .writeTimeout(18000, TimeUnit.MILLISECONDS)
+                .connectTimeout(18000, TimeUnit.MILLISECONDS)
+                .readTimeout(18000, TimeUnit.MILLISECONDS)
+//				    .cookieJar(new CookiesManager())
+                //        .retryOnConnectionFailure(true)
+                .build();
         // step 3：创建 Call 对象
         Call call = okHttpClient.newCall(requestBuilder.build());
         //step 4: 开始异步请求
@@ -2778,6 +2798,8 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             public void onFailure(Call call, IOException e) {
                 Log.d("AllConnects", "请求失败"+e.getMessage());
                 EventBus.getDefault().post("网络请求失败");
+                stopMedie();
+                soundPool.play(musicId.get(4), 1, 1, 0, 0, 1);
             }
             @Override
             public void onResponse(Call call, Response response) {
@@ -2811,8 +2833,10 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
 
     //上传记录
-    private void link_shangchuanshualian(String person_id, Bitmap bitmap,String capture_score,String capture_status,String person_type) {
+    private void link_shangchuanshualian(String person_id, Bitmap bitmap,String capture_score,String capture_status,String person_type,String name) {
         if (baoCunBean.getHoutaiDiZhi() == null || baoCunBean.getHoutaiDiZhi().equals("")) {
+            isLink=false;
+            group_name="facepasstestx";
             return;
         }
         // Bitmap bb = BitmapUtil.rotateBitmap(bitmap, SettingVar.msrBitmapRotation);
@@ -2830,6 +2854,8 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             object.put("capture_status", capture_status);//0 ：通过，白名单比对成功时传        1 ：不通过，用于陌生人采集场景
         } catch (JSONException e) {
             e.printStackTrace();
+            isLink=false;
+            group_name="facepasstestx";
         }
         RequestBody body = RequestBody.create(object.toString(), JSON);
         Request.Builder requestBuilder = new Request.Builder()
@@ -2843,14 +2869,18 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("AllConnects", "请求失败" + e.getMessage());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast tastyToast = TastyToast.makeText(MianBanJiActivity3.this, "上传识别记录失败", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                        tastyToast.setGravity(Gravity.CENTER, 0, 0);
-                        tastyToast.show();
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast tastyToast = TastyToast.makeText(MianBanJiActivity3.this, "网络请求失败", TastyToast.LENGTH_LONG, TastyToast.INFO);
+//                        tastyToast.setGravity(Gravity.CENTER, 0, 0);
+//                        tastyToast.show();
+//                    }
+//                });
+                stopMedie();
+                soundPool.play(musicId.get(4), 1, 1, 0, 0, 1);
+                isLink=false;
+                group_name="facepasstestx";
             }
 
             @Override
@@ -2865,19 +2895,33 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                     Gson gson = new Gson();
                     OpenDoorBean openDoorBean = gson.fromJson(jsonObject, OpenDoorBean.class);
                     if (openDoorBean.isOutput()){//开门
+                        stopMedie();
                         soundPool.play(musicId.get(1), 1, 1, 0, 0, 1);
                         DengUT.getInstance(baoCunBean).openDool();
+                        showUIResult(4,name,"认证通过");
                         closeDoor();//延时几秒后关门
                         if (!DengUT.isOPENGreen) {
                             DengUT.isOPENGreen = true;
                             DengUT.getInstance(baoCunBean).openGreen();
                         }
+                        isLink=false;
+                        group_name="facepasstestx";
                     }else {
+                        stopMedie();
                         soundPool.play(musicId.get(2), 1, 1, 0, 0, 1);
+                        isLink=false;
+                        group_name="facepasstestx";
+                        showUIResult(3,"陌生人","");
+                        DengUT.isOPEN = true;
                     }
                 } catch (Exception e) {
                     Log.d("WebsocketPushMsg", e.getMessage() + "gggg");
-
+                    isLink=false;
+                    group_name="facepasstestx";
+                    stopMedie();
+                    soundPool.play(musicId.get(5), 1, 1, 0, 0, 1);
+                    showUIResult(3,"陌生人","");
+                    DengUT.isOPEN = true;
                 }
             }
         });

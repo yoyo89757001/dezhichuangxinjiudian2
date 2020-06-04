@@ -1,12 +1,11 @@
 package megvii.testfacepass.pa;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
+
 import android.content.SharedPreferences;
-import android.os.Build;
+
 
 import android.os.Environment;
 import android.serialport.SerialPort;
@@ -18,7 +17,7 @@ import androidx.multidex.MultiDex;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.connection.FileDownloadUrlConnection;
 import com.tencent.bugly.Bugly;
-import com.tencent.bugly.beta.Beta;
+
 
 
 
@@ -65,8 +64,8 @@ public class MyApplication extends Application {
     private Box<BenDiJiLuBean> benDiJiLuBeanBox = null;
     private Box<DaKaBean> daKaBeanBox = null;
     private Box<IDCardBean> idCardBeanBox = null;
-    public static final String GROUP_FRAME = "FrameGroup";
-    public static final String GROUP_IMAGE = "ImageGroup";
+   // public static final String GROUP_FRAME = "FrameGroup";
+    //public static final String GROUP_IMAGE = "ImageGroup";
     public static final String SDPATH = Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator+"ruitongzipmbj";
     public static final String SDPATH2 = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"ruitongmbj";
     public static final String SDPATH3 = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"ruitongface";
@@ -161,7 +160,7 @@ public class MyApplication extends Application {
         super.onCreate();
         myApplication=this;
         context = this;
-        //init();
+        init();
         BoxStore mBoxStore = MyObjectBox.builder().androidContext(this).build();
         Bugly.init(this, "4642d9311a", false);
 
@@ -249,7 +248,7 @@ public class MyApplication extends Application {
             baoCunBean.setYusu(5);
             baoCunBean.setYudiao(5);
             baoCunBean.setMima2(123456);
-            baoCunBean.setJihuoma("1266-3264-3886-6563-0724");
+            baoCunBean.setJihuoma("0000-0000-0000-0000-0000");
             baoCunBean.setHuoTi(false);
             baoCunBean.setDangqianShiJian("2");
             baoCunBean.setTianQi(false);

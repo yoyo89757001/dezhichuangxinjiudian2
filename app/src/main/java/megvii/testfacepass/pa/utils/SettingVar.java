@@ -16,7 +16,7 @@ public class SettingVar {
     public static boolean isSettingAvailable = true;
     public static int cameraPreviewRotation = 90;
     public static int cameraPreviewRotation2 = 270;
-    public static int msrBitmapRotation = 270;
+    public static int msrBitmapRotation = 90;
     public static boolean isCross = false;
     public static String SharedPrefrence = "user";
     public static int mHeight;

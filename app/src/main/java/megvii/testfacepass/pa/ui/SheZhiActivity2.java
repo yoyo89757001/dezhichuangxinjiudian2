@@ -123,6 +123,9 @@ public class SheZhiActivity2 extends Activity {
     RelativeLayout rl55;
     @BindView(R.id.banbenhao)
     TextView banbenhao;
+    @BindView(R.id.xuliehao)
+    TextView xuliehao;
+
     //  JiaZaiDialog dddd;
     private ZLoadingDialog zLoadingDialog;
     private final String group_name = "facepasstestx";
@@ -265,10 +268,9 @@ public class SheZhiActivity2 extends Activity {
                     tastyToast.setGravity(Gravity.CENTER, 0, 0);
                     tastyToast.show();
                 }
-
             }
         });
-
+        xuliehao.setText("序列号:"+baoCunBean.getTuisongDiZhi());
      //   guanPing();
     }
 

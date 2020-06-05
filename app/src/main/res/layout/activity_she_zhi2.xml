@@ -967,7 +967,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/rl55"
                 android:background="@drawable/jiaohu31"
                 android:layout_width="match_parent"
@@ -1076,6 +1076,16 @@
                 android:background="#F5F5F5"
                 android:layout_width="match_parent"
                 android:layout_height="16dp"/>
+
+            <TextView
+                android:textColor="@color/blake"
+                android:textSize="16sp"
+                android:id="@+id/xuliehao"
+                android:text="序列号"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <Button
                 android:text="退 出"

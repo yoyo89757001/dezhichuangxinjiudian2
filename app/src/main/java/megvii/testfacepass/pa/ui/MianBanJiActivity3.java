@@ -252,7 +252,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
     ImageView iv_true_gif_in_Ir, iv_true_gif_out_Ir, iv_error_gif_in_Ir, iv_error_gif_out_Ir;//定义旋转的动画
     Animation gifClockwise, gifAntiClockwise;
     LinearInterpolator lir_gif;
-    private Box<IDCardTakeBean> idCardTakeBeanBox=MyApplication.myApplication.getIdCardTakeBeanBox();
+   // private Box<IDCardTakeBean> idCardTakeBeanBox=MyApplication.myApplication.getIdCardTakeBeanBox();
     private int jiqiType=-1;
   //  private boolean isGET = true;
     private int cishu=4;
@@ -1168,6 +1168,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                                 }
                                // Log.d("TanChuangThread",  "压缩后:file.length():" + file.length());
                                 detectResult = paAccessControl.addFace(BitmapFactory.decodeFile(file.getAbsolutePath()));
+
                                 if (detectResult != null && detectResult.result==0) {
                                     byte [] faceToken=detectResult.faceToken;
                                     Subject sb=null;
@@ -1218,12 +1219,14 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                                         subjectBox.put(subject);
                                         successfulList.add(personListBean.getPerson_id());
                                     }
+
                                 } else {
                                     if (detectResult!=null)
                                         failedList.add(new FailedPersonBean(personListBean.getPerson_id(),"图片质量不合格,错误码:"+detectResult.result));
                                     else
                                         failedList.add(new FailedPersonBean(personListBean.getPerson_id(),"检测图片失败"));
                                 }
+                                Log.d("TanChuangThread", "file.delete():" + file.delete());
                             } else {//没图片加入失败记录
                                 failedList.add(new FailedPersonBean(personListBean.getPerson_id(),"下载图片失败"));
                             }
@@ -2601,7 +2604,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                                                             .get(MyApplication.SDPATH3 + File.separator + "aaabbbccc.jpg");
 
                                                     if (file != null) {
-                                                        Log.d("TanChuangThread", file.getAbsolutePath());
+                                                       // Log.d("TanChuangThread", file.getAbsolutePath());
                                                        Bitmap bb= BitmapFactory.decodeFile(file.getAbsolutePath());
                                                        Log.d("TanChuangThread", "bb.getWidth():" + bb.getWidth());
                                                         FacePassCompareResult result= paAccessControl.compare(bitmap_c,BitmapFactory.decodeFile(file.getAbsolutePath()),false);

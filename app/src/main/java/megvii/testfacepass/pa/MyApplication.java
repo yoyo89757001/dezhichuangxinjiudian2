@@ -236,19 +236,19 @@ public class MyApplication extends Application {
       BaoCunBean  baoCunBean = mBoxStore.boxFor(BaoCunBean.class).get(123456L);
         if (baoCunBean == null) {
             baoCunBean = new BaoCunBean();
-            baoCunBean.setHoutaiDiZhi("http://hy.inteyeligence.com/front");
+            baoCunBean.setHoutaiDiZhi("http://21n2c53681.iask.in:9001");
             baoCunBean.setTouxiangzhuji("http://open.inteyeligence.com/front");
             baoCunBean.setId(123456L);
             baoCunBean.setShibieFaceSize(30);
             baoCunBean.setShibieFaZhi(72f);
             baoCunBean.setRuKuFaceSize(50);
-            baoCunBean.setRuKuMoHuDu(0.3f);
+            baoCunBean.setRuKuMoHuDu(0.7f);
             baoCunBean.setHuoTiFZ(72);
             baoCunBean.setMima(123456);
             baoCunBean.setYusu(5);
             baoCunBean.setYudiao(5);
             baoCunBean.setMima2(123456);
-            baoCunBean.setJihuoma("0000-0000-0000-0000-0000");
+            baoCunBean.setJihuoma("1266-3264-3886-6563-0724");
             baoCunBean.setHuoTi(false);
             baoCunBean.setDangqianShiJian("2");
             baoCunBean.setTianQi(false);

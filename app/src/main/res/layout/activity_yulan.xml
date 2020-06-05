@@ -41,6 +41,7 @@
                 android:text="视频注册"
                 android:textColor="@color/white"
                 android:textSize="20sp"
+                android:visibility="gone"
                 android:layout_marginLeft="30dp"
                 android:background="@drawable/jiaohu3"
                 android:id="@+id/btn_group_name"

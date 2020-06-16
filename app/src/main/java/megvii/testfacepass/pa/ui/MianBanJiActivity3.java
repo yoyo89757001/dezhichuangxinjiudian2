@@ -16,18 +16,17 @@ import android.media.SoundPool;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
-import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-
 import android.os.Bundle;
 
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -84,7 +83,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.objectbox.Box;
-import io.objectbox.query.LazyList;
 import mcv.facepass.FacePassException;
 import mcv.facepass.FacePassHandler;
 import mcv.facepass.types.FacePassAddFaceResult;
@@ -103,8 +101,6 @@ import megvii.testfacepass.pa.beans.BaoCunBean;
 import megvii.testfacepass.pa.beans.FailedPersonBean;
 import megvii.testfacepass.pa.beans.HuiFuBean;
 import megvii.testfacepass.pa.beans.IDCardBean;
-import megvii.testfacepass.pa.beans.IDCardBean_;
-import megvii.testfacepass.pa.beans.IDCardTakeBean;
 import megvii.testfacepass.pa.beans.IcCardInfosBean;
 import megvii.testfacepass.pa.beans.LogingBean;
 import megvii.testfacepass.pa.beans.OpenDoorBean;
@@ -115,7 +111,6 @@ import megvii.testfacepass.pa.beans.XGBean;
 import megvii.testfacepass.pa.beans.ZhiLingBean;
 import megvii.testfacepass.pa.camera.CameraManager;
 import megvii.testfacepass.pa.camera.CameraPreview;
-
 import megvii.testfacepass.pa.camera.CameraPreviewData;
 import megvii.testfacepass.pa.dialog.MiMaDialog3;
 import megvii.testfacepass.pa.dialog.MiMaDialog4;
@@ -123,7 +118,6 @@ import megvii.testfacepass.pa.utils.BitmapUtil;
 import megvii.testfacepass.pa.utils.DateUtils;
 import megvii.testfacepass.pa.utils.DengUT;
 import megvii.testfacepass.pa.utils.FacePassUtil;
-
 import megvii.testfacepass.pa.utils.FileUtil;
 import megvii.testfacepass.pa.utils.GetCpuState;
 import megvii.testfacepass.pa.utils.GsonUtil;
@@ -1100,6 +1094,10 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             isIterrupt = true;
             super.interrupt();
         }
+    }
+
+    private boolean isValidUrl(String url){
+        return !TextUtils.isEmpty(url) && url.matches(Patterns.WEB_URL.pattern());
     }
 
 
@@ -2209,7 +2207,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //登录
     private void link_loging(String deviceId){
-        if (baoCunBean.getHoutaiDiZhi()==null || baoCunBean.getHoutaiDiZhi().equals("")){
+        if (!isValidUrl(baoCunBean.getHoutaiDiZhi())){
             EventBus.getDefault().post("后台地址不正确");
             return;
         }
@@ -2354,7 +2352,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
     //登录
     private void link_loging_40004(String deviceId){
-        if (baoCunBean.getHoutaiDiZhi()==null || baoCunBean.getHoutaiDiZhi().equals("")){
+        if (!isValidUrl(baoCunBean.getHoutaiDiZhi())){
             EventBus.getDefault().post("后台地址不正确");
             return;
         }
@@ -2507,7 +2505,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
     //获取ic卡信息
     private void link_ic_info(String ic_card){
-        if (baoCunBean.getHoutaiDiZhi()==null){
+        if (!isValidUrl(baoCunBean.getHoutaiDiZhi())){
             EventBus.getDefault().post("后台地址不正确");
             isLink=false;
             group_name="facepasstestx";
@@ -2745,7 +2743,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
     }
     //上传状态
     private void link_updataState(String deviceId){
-        if (baoCunBean.getHoutaiDiZhi()==null || baoCunBean.getHoutaiDiZhi().equals("")){
+        if (!isValidUrl(baoCunBean.getHoutaiDiZhi())){
             EventBus.getDefault().post("后台地址不正确");
             return;
         }
@@ -2831,7 +2829,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
     //上传记录
     private void link_shangchuanshualian(String person_id, Bitmap bitmap,String capture_score,String capture_status,String person_type,String name) {
-        if (baoCunBean.getHoutaiDiZhi() == null || baoCunBean.getHoutaiDiZhi().equals("")) {
+        if (!isValidUrl(baoCunBean.getHoutaiDiZhi())) {
             isLink=false;
             group_name="facepasstestx";
             return;

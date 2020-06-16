@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -315,6 +317,10 @@ public class SheZhiActivity2 extends Activity {
 //    }
 
 
+    private boolean isValidUrl(String url){
+        return !TextUtils.isEmpty(url) && url.matches(Patterns.WEB_URL.pattern());
+    }
+
     @OnClick({R.id.rl1, R.id.rl11, R.id.rl12, R.id.rl2, R.id.rl3, R.id.rl4, R.id.rl5, R.id.rl6, R.id.rl7, R.id.rl8, R.id.rl9,
             R.id.rl13, R.id.rl14, R.id.rl15, R.id.rl16, R.id.rl17, R.id.rl28, R.id.daochu, R.id.rl33,R.id.rl222,R.id.rl55})
     public void onViewClicked(View view) {
@@ -326,9 +332,16 @@ public class SheZhiActivity2 extends Activity {
                 diZhiDialog.setOnQueRenListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        baoCunBean.setHoutaiDiZhi(diZhiDialog.getUrl());
-                        baoCunBeanDao.put(baoCunBean);
-                        diZhiDialog.dismiss();
+                        if (isValidUrl(diZhiDialog.getUrl())){
+                            baoCunBean.setHoutaiDiZhi(diZhiDialog.getUrl());
+                            baoCunBeanDao.put(baoCunBean);
+                            diZhiDialog.dismiss();
+                        }else {
+                            Toast tastyToast = TastyToast.makeText(SheZhiActivity2.this, "地址错误", TastyToast.LENGTH_LONG, TastyToast.INFO);
+                            tastyToast.setGravity(Gravity.CENTER, 0, 0);
+                            tastyToast.show();
+                        }
+
                     }
                 });
                 diZhiDialog.setQuXiaoListener(new View.OnClickListener() {
@@ -349,9 +362,16 @@ public class SheZhiActivity2 extends Activity {
                 diZhiDialog.setOnQueRenListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        baoCunBean.setTouxiangzhuji(diZhiDialog.getUrl());
-                        baoCunBeanDao.put(baoCunBean);
-                        diZhiDialog.dismiss();
+                        if (isValidUrl(diZhiDialog.getUrl())){
+                            baoCunBean.setTouxiangzhuji(diZhiDialog.getUrl());
+                            baoCunBeanDao.put(baoCunBean);
+                            diZhiDialog.dismiss();
+                        }else {
+                            Toast tastyToast = TastyToast.makeText(SheZhiActivity2.this, "地址错误", TastyToast.LENGTH_LONG, TastyToast.INFO);
+                            tastyToast.setGravity(Gravity.CENTER, 0, 0);
+                            tastyToast.show();
+                        }
+
                     }
                 });
                 diZhiDialog.setQuXiaoListener(new View.OnClickListener() {
